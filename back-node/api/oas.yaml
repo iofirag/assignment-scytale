@@ -1,0 +1,92 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: PR manager
+  description: Nodejs service works with Firebase for managing PRs
+
+servers:
+  - url: /
+    description: Development server
+
+paths:
+  /prs:
+    x-router-controller: PRController
+
+    get:
+      operationId: 'getAllPR'
+      description: fetch all PRs
+      responses:
+        200:
+          description: OK
+          $ref: '#/components/responses/SuccessResponse'
+        400:
+          description: KO
+          $ref: '#/components/responses/BadResponse'
+        500:
+          description: KO
+          $ref: '#/components/responses/BadResponse'
+
+    post:
+      operationId: 'createPR'
+      description: create new PR
+      requestBody:
+        $ref: '#/components/requestBodies/PRBody'
+      responses:
+        200:
+          description: OK
+          $ref: '#/components/responses/SuccessResponse'
+        400:
+          description: KO
+          $ref: '#/components/responses/BadResponse'
+        500:
+          description: KO
+          $ref: '#/components/responses/BadResponse'
+
+components:
+  requestBodies:
+    PRBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PRBody'
+            
+  responses:
+    SuccessResponse:
+      description: "OK"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PRResponse'
+    BadResponse:
+      description: "KO"
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PRResponse'
+
+  schemas:
+    PRResponse:
+      type: object
+
+    PRBody:
+      type: object
+      required:
+        - status
+      properties:
+        status:
+          type: string
+          enum:
+            - Draft
+            - Open
+            - Closed
+        description:
+          type: string
+        author:
+          type: string
+        labels:
+          type: array
+          items:
+            type: string
+
+## edit with https://editor.swagger.io/
