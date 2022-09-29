@@ -1,6 +1,6 @@
 const Awilix = require("awilix");
 const config = require("config");
-const FirebaseService = require("./services/firebaseService");
+// const FirebaseService = require("./services/firebaseService");
 const MongooseService = require("./services/mongooseService");
 const Logger = require('./services/loggerService');
 const Tracer = require("./services/tracerService");
@@ -32,7 +32,7 @@ container.register({
     prData: Awilix.asClass(PRData).singleton(),
     prModel: Awilix.asClass(PRModel).singleton(),
     // Vendor classes
-    firebaseService: Awilix.asClass(FirebaseService).inject(() => ({ config: config.get('firebase') })).singleton(),
+    // firebaseService: Awilix.asClass(FirebaseService).inject(() => ({ config: config.get('firebase') })).singleton(),
     mongooseService: Awilix.asClass(MongooseService).inject(() => ({ config: config.get('mongoDB') })).singleton(),
     logger: Awilix.asClass(Logger).inject(() => ({ config: config.get('log') })).singleton(),
     probe: Awilix.asClass(Probe).inject(() => ({ config: config.get('probe') })).singleton(),

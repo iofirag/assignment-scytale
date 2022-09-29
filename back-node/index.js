@@ -12,7 +12,7 @@ const app = express();
 (async () => {
     const serviceData = container.resolve('serviceData');
     const serverConfig = container.resolve('serverConfig');
-    const firebaseService = container.resolve('firebaseService');
+    // const firebaseService = container.resolve('firebaseService');
     const mongooseService = container.resolve('mongooseService');
     const prModel = container.resolve('prModel');
     const logger = container.resolve('logger');
@@ -26,7 +26,7 @@ const app = express();
     logger.log('info', source);
 
     try {
-        await firebaseService.init();
+        // await firebaseService.init();
         await mongooseService.init();
         await prModel.init();
 
@@ -35,16 +35,18 @@ const app = express();
         app.use(morgan('combined'));
         app.use(express.json({ limit: '50mb' }));
         app.use(express.urlencoded({ extended: true }));
-        app.get("/api-docs", (req, res) => res.json(oasFile));
+        app.get('/api-docs', (req, res) => res.json(oasFile));
 
         await oasTools.initialize(app, oasConfig);
         // Start the server
         await probe.start(app, serverPort);
         probe.readyFlag = true;
-        logger.log('info',
-        `your server is listening on http://localhost:${serverPort} 
+        logger.log(
+            'info',
+            `your server is listening on http://localhost:${serverPort} 
         Swagger-ui API is available on http://localhost:${serverPort}/docs 
-        Swagger-ui API-DOC is available on http://localhost:${serverPort}/api-docs`);
+        Swagger-ui API-DOC is available on http://localhost:${serverPort}/api-docs`
+        );
     } catch (error) {
         probe.readyFlag = false;
         probe.liveFlag = false;
