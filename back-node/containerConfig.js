@@ -1,15 +1,17 @@
 const Awilix = require("awilix");
 const config = require("config");
-const FirebaseService = require("./services/firebaseService");
-const HttpService = require('./services/httpService');
+// const FirebaseService = require("./services/firebaseService");
+const MongooseService = require("./services/mongooseService");
 const Logger = require('./services/loggerService');
 const Tracer = require("./services/tracerService");
 const Probe = require("./services/probeService");
 const pkgJson = require("./package.json");
 
-const PRService = require("./features/example1/PRService");
-const PRLogic = require("./features/example1/PRLogic");
-const PRData = require("./features/example1/PRData");
+const PRService = require("./features/PR/PRService");
+const PRLogic = require("./features/PR/PRLogic");
+const PRData = require("./features/PR/PRData");
+
+const PRModel = require("./models/PRModel");
 
 const container = Awilix.createContainer({
     injectionMode: Awilix.InjectionMode.CLASSIC,
@@ -28,9 +30,10 @@ container.register({
     prService: Awilix.asClass(PRService).singleton(),
     prLogic: Awilix.asClass(PRLogic).singleton(),
     prData: Awilix.asClass(PRData).singleton(),
+    prModel: Awilix.asClass(PRModel).singleton(),
     // Vendor classes
-    firebaseService: Awilix.asClass(FirebaseService).inject(() => ({ config: config.get('firebase') })).singleton(),
-    httpService: Awilix.asClass(HttpService).inject(() => ({ config: config.get('http') })).singleton(),
+    // firebaseService: Awilix.asClass(FirebaseService).inject(() => ({ config: config.get('firebase') })).singleton(),
+    mongooseService: Awilix.asClass(MongooseService).inject(() => ({ config: config.get('mongoDB') })).singleton(),
     logger: Awilix.asClass(Logger).inject(() => ({ config: config.get('log') })).singleton(),
     probe: Awilix.asClass(Probe).inject(() => ({ config: config.get('probe') })).singleton(),
     tracer: Awilix.asClass(Tracer).inject(() => ({ config: config.get('tracer') })).singleton(),

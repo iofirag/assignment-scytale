@@ -34,5 +34,8 @@
     },
     "firebase": {
         
+    },
+    "mongoDB": {
+        "connectionString": "mongodb+srv://admin:1234@cluster0.msu8qdp.mongodb.net/?retryWrites=true&w=majority"
     }
 }
