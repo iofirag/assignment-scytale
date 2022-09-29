@@ -25,12 +25,8 @@ module.exports = class MongooseService {
     }
 
     registerModel(modelName, schema) {
-        const schemaObj = this.createSchema(schema);
+        const schemaObj = new mongoose.Schema(schema);
         this._model[modelName] = mongoose.model(modelName, schemaObj);
-    }
-
-    createSchema(schemaObj) {
-        return new mongoose.Schema(schemaObj);
     }
 
     async getAllDocs(modelName) {

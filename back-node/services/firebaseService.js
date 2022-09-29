@@ -22,4 +22,22 @@ module.exports = class FirebaseService {
             throw error;
         }
     }
+
+    async getAllDocs(modelName) {
+        const prsRef = await this._client.ref(modelName);
+        const snapshot = await prsRef.once('value');
+        const prsObj = snapshot.val();
+        return Object.values(prsObj);
+    }
+
+    async insert(modelName, data) {
+        const id = await this._client.ref(modelName).push().key;
+        const doc = {
+            ...data,
+            id,
+            creationDate: new Date().toISOString(),
+        };
+        await this._client.ref(`prs/${id}`).set(doc);
+        return doc;
+    }
 };

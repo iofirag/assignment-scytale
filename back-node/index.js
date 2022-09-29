@@ -12,7 +12,7 @@ const app = express();
 (async () => {
     const serviceData = container.resolve('serviceData');
     const serverConfig = container.resolve('serverConfig');
-    // const firebaseService = container.resolve('firebaseService');
+    const firebaseService = container.resolve('firebaseService');
     const mongooseService = container.resolve('mongooseService');
     const prModel = container.resolve('prModel');
     const logger = container.resolve('logger');
@@ -26,7 +26,7 @@ const app = express();
     logger.log('info', source);
 
     try {
-        // await firebaseService.init();
+        await firebaseService.init();
         await mongooseService.init();
         await prModel.init();
 
