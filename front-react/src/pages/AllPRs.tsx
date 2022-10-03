@@ -1,22 +1,13 @@
-import { useEffect } from 'react';
-
 import PRList from '../components/prs/PRList';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import NoPRsFound from '../components/prs/NoPRsFound';
-import useHttp from '../hooks/use-http';
-import { getAllPrs } from '../lib/api';
+import useFetch from 'use-http'
+import { SERVER_DOMAIN } from '../lib/api';
 
 const AllPRs = () => {
-  const { sendRequest, status, data: loadedPRs, error } = useHttp(
-    getAllPrs,
-    true
-  );
+  const { data = [], loading, error, response } = useFetch(`${SERVER_DOMAIN}/prs`, {suspense: true}, []);
 
-  useEffect(() => {
-    sendRequest();
-  }, [sendRequest]);
-
-  if (status === 'pending') {
+  if (!response && loading) {
     return (
       <div className='centered'>
         <LoadingSpinner />
@@ -24,15 +15,15 @@ const AllPRs = () => {
     );
   }
 
-  if (error) {
-    return <p className='centered focused'>{error}</p>;
+  if (response && !loading && error) {
+    return <p className='centered focused'>{'Could not fetch quotes.'}</p>;
   }
 
-  if (status === 'completed' && (!loadedPRs || loadedPRs.length === 0)) {
+  if (response.ok && data.length === 0) {
     return <NoPRsFound />;
   }
 
-  return <PRList list={loadedPRs} />;
+  return <PRList list={data} />;
 };
 
 export default AllPRs;
